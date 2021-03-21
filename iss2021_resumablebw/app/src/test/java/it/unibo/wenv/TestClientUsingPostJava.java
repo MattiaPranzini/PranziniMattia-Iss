@@ -19,7 +19,8 @@ public class TestClientUsingPostJava {
     private Pattern pattern = Pattern.compile("abc", Pattern.CASE_INSENSITIVE);
     //@Test
     public void systemSetUp() {
-
+        String moves ="|r, 1, 1, 1, 1, \n|1, 0, 0, 0, 1, \n|1, 0, 0, 0, 1, \n|1, 1, 1, 1, 1, \n";
+                assertTrue(moves.matches("\\|r, (1, )+\n(\\|1, (0, )+1, \n)*(\\|(1, )+)\n$"));
     }
 
 
@@ -33,7 +34,8 @@ public class TestClientUsingPostJava {
         String mappa = "";
         mappa += mapUtil.getMapRep();
         System.out.println("MAPPA: " + mappa);
-        assertTrue(pattern.matches("|r,(1,)+\n(|1,(0,)+1,\n)*|(1,)+\n",mappa));
+        assertTrue(mappa.matches("\\|r, (1, )+\n(\\|1, (0, )+1, \n)*(\\|(1, )+)\n$"));
+       // assertTrue(pattern.matches("|r,(1,)+\n(|1,(0,)+1,\n)*|(1,)+\n",mappa));
     }
 /*
     @Test
