@@ -35,7 +35,7 @@ public class TestClientUsingPostJava {
         mappa += mapUtil.getMapRep();
         System.out.println("MAPPA: " + mappa);
         assertTrue(mappa.matches("\\|r, (1, )+\n(\\|1, (0, )+1, \n)*(\\|(1, )+)\n$"));
-       // assertTrue(pattern.matches("|r,(1,)+\n(|1,(0,)+1,\n)*|(1,)+\n",mappa));
+        //assertTrue(pattern.matches("|r,(1,)+\n(|1,(0,)+1,\n)*|(1,)+\n",mappa));
     }
 /*
     @Test
