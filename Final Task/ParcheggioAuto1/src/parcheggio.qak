@@ -1,0 +1,117 @@
+System parcheggio
+
+Dispatch uscita : uscita(token)
+Dispatch start : start(V)
+Dispatch park : park(V)
+Dispatch ingresso : ingresso(V)
+Dispatch outdoor : outdoor(V)
+
+Event uscita : uscita(token)
+
+Context ctxParcheggio ip [host="localhost" port=8082]
+
+//CodedQActor pickupS context ctxParcheggio className "pickupS"
+
+QActor door context ctxParcheggio{
+	[#
+		var robotLibero = true
+		var outdoorLibera = true
+		var postiLiberi = 6
+	#]
+	
+	State s0 initial{
+		println("Stato 0 initial")
+	}
+	Transition t0 whenMsg uscita -> uscita
+				whenMsg ingresso -> ingresso
+	
+	
+	State uscita{
+		println("Uscita")
+		if[# robotLibero==true #]{
+			onMsg(uscita : uscita(token)){
+				[# var token = payloadArg(0) #]
+			}
+			[# robotLibero = false #]
+			updateResource[#"$robotLibero"#]
+			println("Robot occupato, carica auto e la sposta in uscita.")
+			delay 500
+			forward door -m outdoor : outdoor(1)
+		} else{
+			println("Uscita, ROCCUPATO")
+			forward door -m uscita : uscita(1)
+		}
+	}
+	Transition t0 whenMsg outdoor -> outdoor
+	
+	State outdoor{
+		[#
+			robotLibero = true
+			outdoorLibera = false
+			postiLiberi = postiLiberi+1
+		#]
+		updateResource[#"$postiLiberi"#]
+		updateResource[#"$robotLibero"#]
+		updateResource[#"$outdoorLibera"#]
+		println("Robot libero, uscita occupata")
+		delay 500
+	}
+	Goto liberaUscita
+	
+	State liberaUscita{
+		[#
+			var outdoorLibera = true
+		#]
+		println("Robot libero, uscita libera.")
+		delay 1000
+	}
+	Transition t0 whenMsg uscita -> uscita
+				whenMsg ingresso -> ingresso
+	State ingresso {
+		println("Ingresso")
+		[#
+			postiLiberi = postiLiberi-1
+		#]
+		updateResource[#"$postiLiberi"#]
+		if[# robotLibero==true #]{
+			println("Ingresso, RL")
+			[#
+				robotLibero=false
+			#]
+			updateResource[#"$robotLibero"#]
+			delay 500
+			forward door -m park : park(1)
+		} else{
+			println("Ingresso, ROCCUPATO")
+			forward door -m ingresso : ingresso(1)
+		}
+	}
+	Transition t0 whenMsg ingresso -> ingresso
+				whenMsg park -> park
+	
+	State park{
+		[#
+			robotLibero=true
+		#]
+		updateResource[#"$robotLibero"#]
+		println("PARCHEGGIATO!")
+		delay 1000
+	} 
+	Transition t0 whenMsg uscita -> uscita
+				whenMsg ingresso -> ingresso
+}
+
+
+
+QActor cliente context ctxParcheggio{
+	State s0 initial {
+		forward door -m ingresso : ingresso(1) 
+		forward door -m uscita : uscita(1) 
+		forward door -m ingresso : ingresso(1)
+	}
+}
+
+
+
+
+
