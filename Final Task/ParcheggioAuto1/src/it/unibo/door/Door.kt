@@ -25,8 +25,8 @@ class Door ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 					action { //it:State
 						println("Stato 0 initial")
 					}
-					 transition(edgeName="t00",targetState="uscita",cond=whenDispatch("uscita"))
-					transition(edgeName="t01",targetState="ingresso",cond=whenDispatch("ingresso"))
+					 transition(edgeName="t05",targetState="uscita",cond=whenDispatch("uscita"))
+					transition(edgeName="t06",targetState="ingresso",cond=whenDispatch("ingresso"))
 				}	 
 				state("uscita") { //this:State
 					action { //it:State
@@ -48,7 +48,7 @@ class Door ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 						 forward("uscita", "uscita(1)" ,"door" ) 
 						 }
 					}
-					 transition(edgeName="t02",targetState="outdoor",cond=whenDispatch("outdoor"))
+					 transition(edgeName="t07",targetState="outdoor",cond=whenDispatch("outdoor"))
 				}	 
 				state("outdoor") { //this:State
 					action { //it:State
@@ -74,8 +74,8 @@ class Door ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 						println("Robot libero, uscita libera.")
 						delay(1000) 
 					}
-					 transition(edgeName="t03",targetState="uscita",cond=whenDispatch("uscita"))
-					transition(edgeName="t04",targetState="ingresso",cond=whenDispatch("ingresso"))
+					 transition(edgeName="t08",targetState="uscita",cond=whenDispatch("uscita"))
+					transition(edgeName="t09",targetState="ingresso",cond=whenDispatch("ingresso"))
 				}	 
 				state("ingresso") { //this:State
 					action { //it:State
@@ -98,8 +98,8 @@ class Door ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 						 forward("ingresso", "ingresso(1)" ,"door" ) 
 						 }
 					}
-					 transition(edgeName="t05",targetState="ingresso",cond=whenDispatch("ingresso"))
-					transition(edgeName="t06",targetState="park",cond=whenDispatch("park"))
+					 transition(edgeName="t010",targetState="ingresso",cond=whenDispatch("ingresso"))
+					transition(edgeName="t011",targetState="park",cond=whenDispatch("park"))
 				}	 
 				state("park") { //this:State
 					action { //it:State
@@ -110,8 +110,8 @@ class Door ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 						println("PARCHEGGIATO!")
 						delay(1000) 
 					}
-					 transition(edgeName="t07",targetState="uscita",cond=whenDispatch("uscita"))
-					transition(edgeName="t08",targetState="ingresso",cond=whenDispatch("ingresso"))
+					 transition(edgeName="t012",targetState="uscita",cond=whenDispatch("uscita"))
+					transition(edgeName="t013",targetState="ingresso",cond=whenDispatch("ingresso"))
 				}	 
 			}
 		}
